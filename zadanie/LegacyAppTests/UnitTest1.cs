@@ -62,7 +62,7 @@ public class UnitTest1
             "Jan",
             "Kowalski",
             "kowalski@kowal.com",
-            DateTime.Parse("2020-01-01"),
+            DateTime.Parse("2004-01-01"),
             1);
 
         Assert.False(result);
@@ -78,6 +78,100 @@ public class UnitTest1
             DateTime.Parse("2000-01-01"),
             1);
         Assert.False(result);
+    }
+
+    [Fact]
+    public void AddUser_ReturnsTrueWhenVeryImportantClient()
+    {
+        var userService = new UserService();
+        var result = userService.AddUser(  
+            "Jan",
+            "Malewski",
+            "malewski@gmail.pl",
+            DateTime.Parse("2000-01-01"),
+            2);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void AddUser_ReturnsTrueWhenImportantClient()
+    {
+        var userService = new UserService();
+        var result = userService.AddUser(  
+            "John",
+            "Smith",
+            "smith@gmail.pl",
+            DateTime.Parse("2000-01-01"),
+            3);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void AddUser_ReturnsTrueWhenNormalClient()
+    {
+        var userService = new UserService();
+        var result = userService.AddUser(  
+            "John",
+            "Kwiatkowski",
+            "akwiatkowski@wp.pl",
+            DateTime.Parse("2000-01-01"),
+            5);
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void AddUser_ReturnsFalseWhenNormalClientWithNoCreditLimit()
+    {
+        var userService = new UserService();
+        var result = userService.AddUser(  
+            "John",
+            "Kowalski",
+            "kowalski@wp.pl",
+            DateTime.Parse("2000-01-01"),
+            1);
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void AddUser_ThrowsExceptionWhenUserNoCreditLimitExistsForUser()
+    {
+        var userService = new UserService();
+        Action action = () => userService.AddUser(
+            "Jan", 
+            "Andrzejewicz", 
+            "andrzejewicz@wp.pl",
+            DateTime.Parse("2000-01-01"),
+            6
+        );
+        Assert.Throws<ArgumentException>(action);
+    }
+
+    [Fact]
+    public void AddUser_ThrowsExceptionWhenUserDoesNotExist()
+    {
+        var userService = new UserService();
+        Action action = () => userService.AddUser(
+            "Jan", 
+            "Kowalski", 
+            "kowalski@kowalski.pl",
+            DateTime.Parse("2000-01-01"),
+            13873
+        );
+        Assert.Throws<ArgumentException>(action);
+    }
+    
+    [Fact]
+    public void AddUser_ThrowsArgumentExceptionWhenClientDoesNotExist()
+    {
+        var userService = new UserService();
+        Action action = () => userService.AddUser(
+            "Jan", 
+            "Kowalski", 
+            "kowalski@kowalski.pl",
+            DateTime.Parse("2000-01-01"),
+            100
+        );
+        Assert.Throws<ArgumentException>(action);
     }
     
     
